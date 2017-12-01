@@ -1,0 +1,11 @@
+
+
+
+
+CPU   Central Processing Unit 
+RAM
+HDD
+BUS
+SCREEN
+I/O devices
+NETWORK
