@@ -1,0 +1,25 @@
+
+------------------->
+	 count++   load  inc  stor 
+t1               0    1
+
+count  0                   1   1
+
+t2               0    1
+     count++    load inc     stor
+
+
+
+
+------------------->
+
+mutex            t1 t1 t1 t1 t1 t1 t1 t1 t1 _ t2 t2 t2 t2 t2 t2 _   
+
+	 count++  s(mutex)  { load  inc  stor  } 
+t1                         0     1
+
+count  0                {              1   }  {              2  }  
+
+t2                  wait                           1    2
+     count++    s(mutex)                       { load  inc  stor }
+
