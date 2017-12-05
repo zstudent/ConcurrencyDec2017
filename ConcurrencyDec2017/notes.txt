@@ -9,3 +9,6 @@ BUS
 SCREEN
 I/O devices
 NETWORK
+
+
+spurious wake up
