@@ -1,4 +1,7 @@
-package lesson171205;
+package lesson171206;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import lesson171201.Utils;
 
@@ -8,7 +11,7 @@ public class UseWorker {
 		
 		System.out.println("main started");
 		
-		Worker worker = new Worker();
+		ExecutorService worker = Executors.newSingleThreadExecutor();
 		
 		worker.execute(() -> {
 			Utils.pause(1000);

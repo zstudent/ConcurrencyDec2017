@@ -1,39 +1,48 @@
 package lesson171205;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Worker implements Executor {
 
-	private final Object mutex = new Object();
-	private Queue<Runnable> tasks = new LinkedList<>();
+//	private MyBlockingQueue<Runnable> tasks = new MyBlockingQueue<>();
+	private BlockingQueue<Runnable> tasks = new LinkedBlockingQueue<>();
+	final static private Runnable POISON_PILL = () -> {};
 
 	public Worker() {
 		new Thread(this::processTasks).start();
 	}
 
+	@Override
 	public void execute(Runnable task) {
-		synchronized (mutex) {
-			tasks.offer(task);
-			mutex.notify();
+		try {
+			tasks.put(task);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
 	private void processTasks() {
 		while (true) {
-			Runnable task = null;
-			synchronized (mutex) {
-				while (tasks.isEmpty()) {
-					try {
-						mutex.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+			Runnable task;
+			try {
+				task = tasks.take();
+				if (task == POISON_PILL) {
+					break;
 				}
-				task = tasks.poll();
+				task.run();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			task.run();
+		}
+	}
+	
+	public void shutdown() {
+		try {
+			tasks.put(POISON_PILL);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
