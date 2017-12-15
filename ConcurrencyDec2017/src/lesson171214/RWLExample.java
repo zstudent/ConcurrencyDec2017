@@ -9,6 +9,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class RWLExample {
+
+	private static final int THRESHHOLD = 10000;
 	
 	private static final class Reader implements Runnable {
 		
@@ -23,7 +25,7 @@ public class RWLExample {
 			long count = 0;
 			while (true) {
 				String string = dict.get("hello");
-				if (count++ % 10000 == 0) {
+				if (count++ % THRESHHOLD == 0) {
 					System.out.println(Thread.currentThread() + " " + count);
 				}
 			}
@@ -38,16 +40,20 @@ public class RWLExample {
 		dict.put("hello", "world");
 		
 		Runnable writer = () -> {
+			long count = 0;
 			while (true) {
 				dict.put("haha", "hoho");
+				if (count++ % THRESHHOLD == 0) {
+					System.out.println("writer :" + count);
+				}
 			}
 		};
 		
 		ExecutorService service = Executors.newCachedThreadPool();
 		
-		service.execute(new Reader(dict));
-		service.execute(new Reader(dict));
-		service.execute(new Reader(dict));
+		for (int i = 0; i < 100; i++) {
+			service.execute(new Reader(dict));
+		}
 		
 		service.execute(writer);
 	}

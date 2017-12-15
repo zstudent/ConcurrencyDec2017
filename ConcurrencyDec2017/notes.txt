@@ -53,7 +53,15 @@ t2     [                                             ]
 
 
 
+1) Thread
+2) Race Condition, Visibility, Dead Lock, Starvation, Live Lock
+3) synchronized, volatile, wait/notify, 
+4) executors, scheduled executors
+5) callable, future
+6) Lock/ReentrantLock, ReadWriteLock/ReentrantReadWriteLock, Condition
+7) Semaphore
 
+8) BlockingQueue, LinkedBlockingQueue, SynchronousQueue
 
 
 
