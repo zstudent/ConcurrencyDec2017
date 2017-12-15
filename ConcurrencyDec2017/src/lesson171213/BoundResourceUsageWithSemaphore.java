@@ -14,7 +14,7 @@ public class BoundResourceUsageWithSemaphore {
 
 		Semaphore sem = new Semaphore(5);
 
-		ExecutorService service = Executors.newFixedThreadPool(1);
+		ExecutorService service = Executors.newFixedThreadPool(2);
 
 		while (true) {
 			int[] data = new int[MAX];
